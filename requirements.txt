@@ -42,7 +42,7 @@ markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 matplotlib==3.10.1
 mdurl==0.1.2
-mediapipe==0.9.1
+mediapipe==0.10.9
 ml_dtypes==0.5.1
 mpmath==1.3.0
 namex==0.1.0
@@ -90,7 +90,7 @@ sounddevice==0.5.2
 sympy==1.13.1
 tensorboard==2.19.0
 tensorboard-data-server==0.7.2
-tensorflow==2.13.0
+tensorflow==2.14.0
 tensorflow-datasets==4.9.3
 tensorflow-io-gcs-filesystem==0.31.0
 tensorflow-metadata==1.13.0
