@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Visualización de Embeddings</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://unpkg.com/@fortawesome/fontawesome-free@6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+</head>
+<body class="bg-gradient-to-b from-blue-50 to-white text-gray-800 font-sans">
+
+  <div class="max-w-6xl mx-auto py-16 px-6 text-[1.15rem] leading-relaxed">
+
+    <!-- Cabecera -->
+    <header class="mb-14 text-center">
+      <div class="flex justify-center items-center mb-4">
+        <i class="fas fa-brain text-6xl text-blue-600 mr-4"></i>
+        <h1 class="text-5xl font-extrabold text-blue-800">Embeddings con t-SNE</h1>
+      </div>
+      <p class="text-xl text-gray-700 max-w-3xl mx-auto mt-3">
+        <i class="fas fa-search text-blue-500 mr-2"></i>
+        Explora visualmente cómo un modelo de IA representa y agrupa las señas del lenguaje mediante una reducción de dimensionalidad interactiva.
+      </p>
+    </header>
+
+    <!-- Explicación -->
+    <section class="bg-white p-10 rounded-2xl shadow-md mb-14 space-y-6 border border-blue-100">
+      <h2 class="text-3xl font-bold text-blue-700 flex items-center mb-4">
+        <i class="fas fa-lightbulb mr-3 text-yellow-400"></i> ¿Qué estás viendo?
+      </h2>
+      <p>
+        <i class="fas fa-database text-blue-400 mr-2"></i>
+        <strong>Embeddings:</strong> vectores numéricos que representan imágenes, palabras o conceptos. El modelo los usa para “entender” y agrupar datos similares.
+      </p>
+      <p>
+        <i class="fas fa-project-diagram text-green-500 mr-2"></i>
+        <strong>t-SNE:</strong> reduce estos vectores a 2 dimensiones para visualizar relaciones: puntos cercanos representan imágenes similares.
+      </p>
+      <p>
+        <i class="fas fa-mouse-pointer text-purple-500 mr-2"></i>
+        Coloca el cursor sobre un punto para ver la letra predicha, la confianza del modelo y una vista previa de la imagen.
+      </p>
+    </section>
+
+    <!-- Formulario -->
+    <section class="bg-white p-10 rounded-2xl shadow-md mb-14 max-w-3xl mx-auto border border-blue-100">
+      <h2 class="text-2xl font-bold text-blue-700 mb-6 text-center">
+        <i class="fas fa-sliders-h mr-2 text-blue-500"></i> Personaliza la Visualización
+      </h2>
+      <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg">
+        <div>
+          <label class="block font-semibold mb-2 text-gray-700">
+            <i class="fas fa-font mr-1 text-blue-600"></i> Letras a visualizar:
+          </label>
+          <input
+            type="number"
+            name="num_letters"
+            value="{{ selected_letters }}"
+            min="2"
+            max="29"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300"
+            required />
+        </div>
+        <div>
+          <label class="block font-semibold mb-2 text-gray-700">
+            <i class="fas fa-images mr-1 text-green-600"></i> Imágenes por letra:
+          </label>
+          <input
+            type="number"
+            name="num_images"
+            value="{{ selected_images }}"
+            min="5"
+            max="50"
+            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-300"
+            required />
+        </div>
+        <div class="md:col-span-2 text-center">
+          <button type="submit" class="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+            <i class="fas fa-chart-scatter mr-2"></i> Generar Visualización
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Visualización Plotly -->
+    <section class="bg-white p-6 rounded-xl shadow-md mb-14 border border-gray-200">
+      {{ plot_html | safe }}
+    </section>
+
+    <!-- Interpretación -->
+    <section class="bg-white p-10 rounded-2xl shadow-md mb-20 text-gray-800 border border-blue-100">
+      <h2 class="text-3xl font-bold text-blue-700 mb-6 flex items-center">
+        <i class="fas fa-eye mr-3 text-blue-600"></i> Interpretación del Gráfico
+      </h2>
+      <ul class="space-y-4 text-lg">
+        <li>
+          <i class="fas fa-dot-circle text-purple-600 mr-2"></i>
+          <strong>Cada punto:</strong> representa una imagen procesada por el modelo.
+        </li>
+        <li>
+          <i class="fas fa-arrows-alt text-green-600 mr-2"></i>
+          <strong>Distancia entre puntos:</strong> mayor cercanía implica mayor similitud.
+        </li>
+        <li>
+          <i class="fas fa-percent text-yellow-600 mr-2"></i>
+          <strong>Confianza:</strong>
+          <ul class="ml-6 list-disc">
+            <li><i class="fas fa-check-circle text-green-500 mr-1"></i> Más del 90% → alta certeza.</li>
+            <li><i class="fas fa-exclamation-circle text-yellow-500 mr-1"></i> 70–90% → moderada.</li>
+            <li><i class="fas fa-question-circle text-red-500 mr-1"></i> Menos del 70% → posible confusión.</li>
+          </ul>
+        </li>
+        <li>
+          <i class="fas fa-image text-pink-500 mr-2"></i>
+          Al pasar el cursor, se muestra la predicción, la confianza y una miniatura.
+        </li>
+      </ul>
+    </section>
+
+    <!-- Volver -->
+    <div class="text-center">
+      <a href="/" class="inline-block px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition duration-300">
+        <i class="fas fa-arrow-left mr-2"></i> Volver al inicio
+      </a>
+    </div>
+
+  </div>
+</body>
+</html>

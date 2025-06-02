@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Aprende Lenguaje de Señas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .modal-bg {
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body
+    class="bg-gradient-to-r from-blue-100 via-white to-blue-100 min-h-screen text-gray-800"
+  >
+    <!-- Navbar -->
+    <nav class="bg-white shadow-md w-full fixed top-0 z-50">
+      <div
+        class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center"
+      >
+        <div class="flex items-center space-x-3">
+          <img
+            src="https://img.icons8.com/ios-filled/50/sign-language.png"
+            class="w-8 h-8"
+            alt="Logo"
+          />
+          <span class="text-xl font-bold text-blue-700">Aprende LSM</span>
+        </div>
+        <div
+          class="hidden md:flex space-x-6 text-sm font-medium text-blue-600 items-center"
+        >
+          <a
+            href="#"
+            onclick="mostrarSeccion('inicio')"
+            class="hover:text-blue-800 transition"
+            >Inicio</a
+          >
+
+          <a
+            href="#"
+            onclick="mostrarSeccion('galeria')"
+            class="hover:text-blue-800 transition"
+            >Galería</a
+          >
+
+          <a href="/embeddings" class="hover:text-blue-800 transition"
+            >Visualización de Embeddings</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Espaciador navbar -->
+    <div class="h-20"></div>
+
+    <!-- Sección Inicio -->
+    <section
+      id="inicio"
+      class="px-4 pt-10 pb-24 bg-gradient-to-br from-blue-50 via-white to-blue-100 text-gray-800"
+    >
+      <div class="max-w-5xl mx-auto space-y-16">
+        <!-- Encabezado -->
+        <div class="text-center">
+          <h1 class="text-4xl font-bold text-blue-700">
+            Aprende Lengua de Señas Americana (ASL)
+          </h1>
+          <p class="mt-4 text-lg text-gray-600">
+            Sube una imagen con una seña manual y descubre qué letra representa
+            según el alfabeto dactilológico de la ASL.
+          </p>
+        </div>
+
+        <!-- Explicación del LSM y propósito -->
+        <div class="grid md:grid-cols-3 gap-8 text-center">
+          <div
+            class="p-6 bg-white rounded-xl shadow hover:shadow-md transition"
+          >
+            <img
+              src="https://img.icons8.com/fluency/48/handshake.png"
+              class="mx-auto mb-4"
+              alt="LSM"
+            />
+            <p class="text-gray-700">
+              La Lengua de Señas Americana (ASL) es un sistema visual-gestual
+              utilizado para comunicarse, especialmente por personas sordas o
+              con dificultades auditivas.
+            </p>
+          </div>
+          <div
+            class="p-6 bg-white rounded-xl shadow hover:shadow-md transition"
+          >
+            <img
+              src="https://img.icons8.com/fluency/48/classroom.png"
+              class="mx-auto mb-4"
+              alt="Propósito"
+            />
+            <h2 class="text-xl font-semibold text-blue-700 mb-2">
+              Propósito Educativo
+            </h2>
+            <p class="text-gray-700">
+              Esta plataforma busca fomentar el aprendizaje de la ASL mediante
+              inteligencia artificial, promoviendo la inclusión y el acceso al
+              lenguaje visual.
+            </p>
+          </div>
+          <div
+            class="p-6 bg-white rounded-xl shadow hover:shadow-md transition"
+          >
+            <img
+              src="https://img.icons8.com/fluency/48/artificial-intelligence.png"
+              class="mx-auto mb-4"
+              alt="Clasificación"
+            />
+            <h2 class="text-xl font-semibold text-blue-700 mb-2">
+              ¿Cómo se clasifica?
+            </h2>
+            <p class="text-gray-700">
+              El sistema analiza una imagen de una seña manual, la procesa y
+              predice la letra correspondiente usando un modelo de aprendizaje
+              profundo.
+            </p>
+          </div>
+        </div>
+
+        <!-- Clasificación -->
+        <div class="bg-white rounded-xl shadow-lg p-8 text-center space-y-6">
+          <h2 class="text-2xl font-bold text-blue-700">Clasifica una Seña</h2>
+          <p class="text-gray-600">
+            Sube una imagen clara de una seña realizada con la mano si quieres
+            practicar. El modelo identificará la letra del alfabeto ASL.
+          </p>
+          <form
+            method="POST"
+            enctype="multipart/form-data"
+            class="flex flex-col items-center gap-4"
+            onsubmit="mostrarProceso(event)"
+          >
+            <label
+              class="cursor-pointer bg-blue-100 hover:bg-blue-200 text-blue-700 px-6 py-2 rounded-full font-semibold shadow-inner transition"
+            >
+              Seleccionar Imagen
+              <input
+                type="file"
+                name="image"
+                accept="image/*"
+                class="hidden"
+                required
+                onchange="mostrarVistaPrevia(event)"
+              />
+            </label>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-blue-700 shadow-md transition"
+            >
+              Clasificar Imagen
+            </button>
+          </form>
+
+          <!-- Botón para descargar imagen aleatoria -->
+          <div class="text-center mt-4">
+            <a
+              href="/descargar-imagen"
+              class="inline-block bg-green-600 text-white font-semibold px-6 py-2 rounded-full hover:bg-green-700 shadow-md transition"
+            >
+              Descargar Imagen Aleatoria
+            </a>
+          </div>
+
+          <!-- Vista previa de la imagen seleccionada -->
+          <div id="preview-container" class="mt-4 hidden text-center">
+            <p class="text-sm text-gray-700">Imagen seleccionada:</p>
+            <img
+              id="preview-image"
+              src=""
+              alt="Vista previa"
+              class="mx-auto mt-2 max-h-60 rounded shadow"
+            />
+          </div>
+
+          <!-- Progreso -->
+          <div
+            id="proceso"
+            class="hidden mt-6 w-full max-w-md mx-auto text-left"
+          >
+            <p id="etapa" class="font-medium text-gray-700 mb-2">
+              Cargando imagen...
+            </p>
+            <div
+              class="w-full bg-gray-200 h-4 rounded-full overflow-hidden shadow-inner"
+            >
+              <div
+                id="barra"
+                class="bg-blue-500 h-4 rounded-full transition-all duration-500 ease-in-out"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+          {% if result %}
+          <div class="mt-6 text-center">
+            <h2 class="text-2xl font-bold">Letra detectada: {{ result }}</h2>
+            <p class="text-green-700 font-semibold text-lg">
+              Confianza: {{ confidence }}%
+            </p>
+
+            <div
+              class="mt-6 flex flex-col md:flex-row md:justify-center md:items-start gap-6"
+            >
+              <div class="w-full md:w-1/2">
+                <h3 class="font-semibold mb-2">Imagen subida:</h3>
+                <img
+                  src="data:image/jpeg;base64,{{ preview_image }}"
+                  alt="Imagen subida"
+                  class="mx-auto rounded shadow-md w-64"
+                />
+              </div>
+
+              {% if explanation_image %}
+              <div class="w-full md:w-1/2">
+                <h3 class="font-semibold mb-2">
+                  Explicación del modelo (Grad-CAM):
+                </h3>
+                <img
+                  src="data:image/jpeg;base64,{{ explanation_image }}"
+                  class="mx-auto rounded shadow-md w-64"
+                  alt="Explicación del modelo"
+                />
+              </div>
+              {% endif %}
+            </div>
+          </div>
+          {% endif %} {% if probabilities %}
+          <div class="mt-10">
+            <h3 class="text-xl font-semibold mb-4 text-center">
+              Confianza del modelo para cada letra
+            </h3>
+            <div class="max-w-4xl mx-auto">
+              <canvas id="chart"></canvas>
+            </div>
+
+            <script>
+              const ctx = document.getElementById('chart').getContext('2d');
+              const chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                  labels: {{ probabilities | map(attribute=0) | list | tojson }},
+                  datasets: [{
+                    label: 'Confianza (%)',
+                    data: {{ probabilities | map(attribute=1) | list | tojson }},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                  }]
+                },
+                options: {
+                  responsive: true,
+                  scales: {
+                    y: { beginAtZero: true, max: 100 }
+                  }
+                }
+              });
+            </script>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Galería (oculta por defecto) -->
+    <section
+      id="galeria"
+      class="hidden w-full bg-gradient-to-b from-blue-50 via-white to-green-50 py-16"
+    >
+      <div class="max-w-6xl mx-auto px-4 text-center">
+        <h2 class="text-4xl font-bold text-blue-800 mb-6">Galería de Señas</h2>
+        <div
+          class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-6"
+        >
+          {% for letter in letters %}
+          <div
+            class="bg-white rounded-xl shadow-md hover:shadow-xl transition duration-300 transform hover:scale-105 p-4 text-center cursor-pointer"
+            onclick="ampliarImagen('{{ url_for('static', filename='asl/' ~ letter ~ '_test.jpg') }}', '{{ letter }}')"
+          >
+            <img
+              src="{{ url_for('static', filename='asl/' ~ letter ~ '_test.jpg') }}"
+              alt="Seña {{ letter }}"
+              class="rounded-md mx-auto max-h-28 object-contain"
+            />
+            <p class="mt-3 text-lg font-semibold text-gray-800">{{ letter }}</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal para imagen ampliada -->
+    <div
+      id="modal"
+      class="fixed inset-0 flex items-center justify-center z-50 hidden modal-bg"
+    >
+      <div class="bg-white p-6 rounded shadow-lg max-w-sm relative">
+        <button
+          onclick="cerrarModal()"
+          class="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        >
+          &times;
+        </button>
+        <img
+          id="modal-img"
+          src=""
+          alt="Imagen ampliada"
+          class="w-full rounded"
+        />
+        <p
+          id="modal-text"
+          class="mt-4 text-center text-xl font-semibold text-gray-700"
+        ></p>
+      </div>
+    </div>
+
+    <script>
+      function mostrarSeccion(seccion) {
+        document.getElementById("inicio").classList.add("hidden");
+        document.getElementById("galeria").classList.add("hidden");
+        document.getElementById(seccion).classList.remove("hidden");
+        window.scrollTo(0, 0);
+      }
+
+      function mostrarProceso(event) {
+        event.preventDefault(); // Evita que el formulario se envíe de inmediato
+
+        const proceso = document.getElementById("proceso");
+        const etapa = document.getElementById("etapa");
+        const barra = document.getElementById("barra");
+
+        proceso.classList.remove("hidden");
+
+        const pasos = [
+          "Cargando imagen desde el formulario...",
+          "Redimensionando a 96x96 píxeles...",
+          "Normalizando valores de los píxeles...",
+          "Convirtiendo a tensor NumPy...",
+          "Ejecutando predicción con el modelo...",
+          "Interpretando resultados...",
+        ];
+
+        let i = 0;
+        const intervalo = setInterval(() => {
+          if (i < pasos.length) {
+            etapa.textContent = pasos[i];
+            barra.style.width = `${((i + 1) * 100) / pasos.length}%`;
+            i++;
+          } else {
+            clearInterval(intervalo);
+            event.target.submit();
+          }
+        }, 700);
+      }
+    </script>
+    <script>
+      function mostrarVistaPrevia(event) {
+        const file = event.target.files[0];
+        const previewContainer = document.getElementById("preview-container");
+        const previewImage = document.getElementById("preview-image");
+
+        if (file && file.type.startsWith("image/")) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            previewImage.src = e.target.result;
+            previewContainer.classList.remove("hidden");
+          };
+          reader.readAsDataURL(file);
+        } else {
+          previewContainer.classList.add("hidden");
+          previewImage.src = "";
+        }
+      }
+    </script>
+  </body>
+</html>
