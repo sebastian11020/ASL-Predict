@@ -42,7 +42,7 @@ markdown-it-py==3.0.0
 MarkupSafe==3.0.2
 matplotlib==3.10.1
 mdurl==0.1.2
-mediapipe==0.10.21
+mediapipe==0.10.0
 ml_dtypes==0.5.1
 mpmath==1.3.0
 namex==0.1.0
@@ -60,7 +60,7 @@ pandas==2.2.3
 pillow==11.1.0
 plotly==6.1.2
 promise==2.3
-protobuf==4.25.3
+protobuf==4.21.9
 psutil==7.0.0
 pyarrow==20.0.0
 pycparser==2.22
