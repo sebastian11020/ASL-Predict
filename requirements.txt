@@ -1,4 +1,4 @@
-absl-py==2.3.0
+absl-py==1.4.0
 array-record==0.4.1
 astunparse==1.6.3
 attrs==25.3.0
