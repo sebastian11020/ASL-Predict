@@ -216,5 +216,5 @@ def overlay_heatmap(heatmap, original_image, alpha=0.4, colormap=cv2.COLORMAP_JE
 
 # ---- Ejecutar la app ----
 
-if __name__ == '__main__':
-    app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
