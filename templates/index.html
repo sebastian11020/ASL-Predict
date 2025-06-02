@@ -21,36 +21,64 @@
         class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center"
       >
         <div class="flex items-center space-x-3">
-          <img
-            src="https://img.icons8.com/ios-filled/50/sign-language.png"
-            class="w-8 h-8"
-            alt="Logo"
-          />
-          <span class="text-xl font-bold text-blue-700">Aprende LSM</span>
+          <img src="/static/img/logo.png" class="w-8 h-8" alt="Logo" />
+          <span class="text-xl font-bold text-blue-700">Aprende ASL</span>
         </div>
+
+        <!-- Botón hamburguesa -->
+        <div class="md:hidden">
+          <button id="menu-btn" class="focus:outline-none">
+            <svg
+              class="w-6 h-6 text-blue-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Menú de navegación -->
         <div
-          class="hidden md:flex space-x-6 text-sm font-medium text-blue-600 items-center"
+          id="nav-menu"
+          class="hidden md:flex flex-col md:flex-row md:space-x-6 space-y-2 md:space-y-0 text-sm font-medium text-blue-600 items-center absolute md:static bg-white top-16 left-0 w-full md:w-auto px-4 md:px-0"
         >
           <a
             href="#"
             onclick="mostrarSeccion('inicio')"
-            class="hover:text-blue-800 transition"
+            class="hover:text-blue-800 transition block py-2 md:py-0"
             >Inicio</a
           >
-
           <a
             href="#"
             onclick="mostrarSeccion('galeria')"
-            class="hover:text-blue-800 transition"
+            class="hover:text-blue-800 transition block py-2 md:py-0"
             >Galería</a
           >
-
-          <a href="/embeddings" class="hover:text-blue-800 transition"
+          <a
+            href="/embeddings"
+            class="hover:text-blue-800 transition block py-2 md:py-0"
             >Visualización de Embeddings</a
           >
         </div>
       </div>
     </nav>
+
+    <script>
+      const menuBtn = document.getElementById("menu-btn");
+      const navMenu = document.getElementById("nav-menu");
+
+      menuBtn.addEventListener("click", () => {
+        navMenu.classList.toggle("hidden");
+      });
+    </script>
 
     <!-- Espaciador navbar -->
     <div class="h-20"></div>

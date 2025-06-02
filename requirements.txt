@@ -60,7 +60,6 @@ pandas==2.2.3
 pillow==11.1.0
 plotly==6.1.2
 promise==2.3
-protobuf==4.25.8
 psutil==7.0.0
 pyarrow==20.0.0
 pycparser==2.22
